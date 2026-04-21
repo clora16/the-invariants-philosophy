@@ -1,110 +1,93 @@
 # The Invariants Philosophy
 
-旧来の再利用単位はライブラリ・モジュールだった。しかし実装コストが下がった今、再利用すべき資産をもう一段抽象化する必要がある。それは、案件を超えて適用できる設計思想・原理原則である。
+この repository は、案件を超えて再利用できる不変資産を管理するための場所である。ここで再利用するのはライブラリやモジュールそのものではなく、設計思想・原理原則・最低限の実装基準である。
 
-顧客の要求はそれぞれ微妙に異なる。従来はその差異を既存ライブラリに無理やり合わせることで吸収しようとしていた。結果として、顧客要求と実装の双方に妥協が生まれていた。
+## Repository Purpose
 
-原理原則を持つことで、これを起点に顧客の要求と組み合わせ、よりフィットした実装を生み出せる。LLM に **「原理原則」と「顧客の要求」** の二つを渡すことで、その合成を高い品質で実現できる。
+この repository の目的は、良い実装を安定して生み出すための判断資産を再利用することにある。LLM や人間の実装者は、ここにある不変資産と案件側の customer requirements を組み合わせて設計と実装を行う。
 
-## What this repository is
+## What This Repository Includes
 
-この repository は、案件を超えて再利用可能な **設計思想・原理原則・最低限の実装基準** を蓄積するための場所である。
+この repository に含めるもの:
 
-ここで管理するのは、特定案件の要件や実装詳細ではない。  
-管理対象は、複数案件で再利用される以下のような資産である。
+- principles
+- anti-patterns
+- decision rules
+- capability standards
+- principles や capability standards の適用を支援する補助文書
+- review / testing / config / security の標準方針
+- 案件横断で再利用できる glossary
 
-- 設計原則
-- 分割原則
-- 命名原則
-- anti-pattern
-- 判断基準
-- capability standard
-- review 観点
-- testing / config / security の標準方針
+この repository に含めないもの:
 
-## What this repository is not
-
-この repository は、案件固有の情報を置く場所ではない。  
-以下は原則として含めない。
-
+- customer requirements
 - 顧客固有要件
-- 個別案件の制約
-- milestone / task breakdown
-- 現在の実装状況
-- 一時的な意思決定メモ
+- 案件固有制約
+- 顧客固有の task breakdown
+- 顧客固有の milestones
+- 進捗、TODO、暫定メモ
 - 顧客専用の API / UI 仕様
 
-それらは各案件側の repository / document で管理する。
+## Information Model
 
-## Core idea
+この repository では、文書を次の三層で整理する。
 
-実装は、次の三層の合成で考える。
-
-1. **Principles**  
-   どう考え、どう設計し、何を避けるかを定義する。
-
-2. **Capability Standards**  
+1. `Principles`
+   どう考えるか、どう設計するか、何を避けるか、迷ったとき何を優先するかを定義する。
+2. `Capability Standards`
    ある種類のシステムが最低限満たすべき実装基準を定義する。
-
-3. **Customer Requirements**  
-   顧客ごとの差分要件を定義する。
-
-LLM には主に次を渡す。
-
-- The Invariants Philosophy にある Principles / Standards
-- 案件側の Customer Requirements
-
-この二つを合成することで、案件ごとに適合した実装を生成する。
+3. `Support Documents`
+   principles や capability standards を実装や導入へ落とすための補助文書を定義する。案件横断で再利用できるものだけを含める。
+4. `Customer Requirements`
+   顧客ごとの差分要件を定義する。これはこの repository には置かない。
 
 ## Naming Convention
 
-- フォルダは関心領域ごとに分ける  
-  例: `architecture/`, `config/`, `testing/`, `standards/`
+命名規則は次で固定する。
 
-- ファイル名は `種類_対象.md` を基本とする  
-  例:
-  - `principles_architecture.md`
-  - `anti_patterns_architecture.md`
-  - `principles_config.md`
-  - `capability_standard_chat_system.md`
+1. フォルダで関心領域を表す。
+2. ファイル名は `種類_対象.md` とする。
+3. `種類` には `principles` / `anti_patterns` / `decision_rules` / `capability_standard` / `glossary` などを使う。
+4. 顧客名、案件名、日付、版番号をファイル名に入れない。
 
-- 種類には次を使う
-  - `principles`
-  - `anti_patterns`
-  - `decision_rules`
-  - `capability_standard`
-  - `checklist`
-  - `glossary`
+例:
 
-- 顧客名・案件名は入れない
-- 一時的な版番号や日付をファイル名に入れない
+- `principles_architecture.md`
+- `principles_config.md`
+- `capability_standard_chat_system.md`
 
-## Inclusion criteria
+## Promotion Rule
 
-この repository に入れてよいものは、次を満たすものに限る。
+案件側の知見をこの repository に昇格してよいのは、次を満たす場合のみとする。
 
-案件を超えて再利用できる
-一時的ではなく、比較的安定している
-実装やレビューの判断軸として使える
-顧客固有情報を含まない
-LLM に渡したときに再利用価値が高い
-Promotion rule
+1. 案件を超えて再利用できる。
+2. 一時的ではなく比較的安定している。
+3. 実装やレビューの判断軸として使える。
+4. 顧客固有情報を含まない。
+5. LLM に渡したとき再利用価値が高い。
 
-案件で生まれた知見をこの repository に昇格してよいのは、次の場合のみとする。
+満たさない場合は、案件側 repository または案件側 document に留める。
 
-複数案件で繰り返し現れる
-特定案件の事情に閉じない
-単なる実装テクニックではなく、判断基準として一般化できる
-今後も継続して参照する価値がある
+補助文書を置く場合も、次を満たす必要がある。
 
-## How to use
+1. 特定顧客の進捗管理ではない。
+2. 特定案件の納期や体制に依存しない。
+3. principles または capability standards の適用支援として読める。
 
-まず Principles を参照する
-次に Capability Standard を参照する
-最後に案件側の Customer Requirements と組み合わせる
-実装・レビュー・設計判断を行う
+## How To Use
 
-# Goal
+1. まず `Principles` を参照する。
+2. 次に対象システムの `Capability Standard` を参照する。
+3. 必要に応じて `Support Documents` を参照する。
+4. 最後に案件側の `Customer Requirements` と合成する。
+5. 実装・レビュー・設計判断の順で適用する。
 
-この repository の目的は、コードを再利用することではない。
-良い実装を安定して生み出すための判断資産を再利用すること である。
+## Writing Rules
+
+この repository の文書は、次の形で書く。
+
+1. 原則、禁止事項、判断基準、最低限基準として書く。
+2. 一時的な実装状況や TODO を残さない。
+3. 顧客固有要件を invariant に偽装しない。
+4. 実装例は原則を説明する最小限に留める。
+5. LLM に渡しやすいよう、短く構造化して書く。
